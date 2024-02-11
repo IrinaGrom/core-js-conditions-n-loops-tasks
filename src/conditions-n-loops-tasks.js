@@ -107,20 +107,26 @@ function canQueenCaptureKing(queen, king) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  // if (a === 0 || b === 0 || c === 0) {
-  //   return false;
-  // }
-  // if (a === b) {
-  //   return true;
-  // } else if (a === c) {
-  //   return true;
-  // } else if (b === c) {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  let result;
+  if (a <= 0 || b <= 0 || c <= 0) {
+    return false;
+  }
+  const max = Math.max(a, b, c);
+  const sum = a + b + c - max;
+  if (sum <= max) {
+    return false;
+  }
+  if (a === b) {
+    result = true;
+  } else if (a === c) {
+    result = true;
+  } else if (b === c) {
+    result = true;
+  } else {
+    result = false;
+  }
+  return result;
 }
 
 /**
@@ -529,8 +535,37 @@ function shuffleChar(str, iterations) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let param = number;
+  let digits = [];
+  while (param > 0) {
+    digits = [param % 10, ...digits];
+    param = Math.floor(param / 10);
+  }
+  let i = digits.length - 1;
+  while (i > 0 && digits[i - 1] >= digits[i]) {
+    i -= 1;
+  }
+  if (i === 0) {
+    return number;
+  }
+  let j = digits.length - 1;
+  while (digits[j] <= digits[i - 1]) {
+    j -= 1;
+  }
+  [digits[i - 1], digits[j]] = [digits[j], digits[i - 1]];
+  const ind = i;
+  let rest = [];
+  while (i < digits.length) {
+    rest = [...rest, digits[i]];
+    i += 1;
+  }
+  const sorted = rest.sort();
+  const result = Number.parseInt(
+    digits.slice(0, ind).concat(sorted).join(''),
+    10
+  );
+  return result;
 }
 
 module.exports = {
